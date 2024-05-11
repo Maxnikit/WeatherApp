@@ -22,4 +22,5 @@ export interface WeatherData {
   cityName: string; // City name
   countryName: string;
   forecastList: any;
+  timezone: number;
 }

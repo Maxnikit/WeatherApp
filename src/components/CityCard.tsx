@@ -1,5 +1,5 @@
 // components/CityCard.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import { WeatherData } from "../types/weather.types";
 import {
   Card,
@@ -12,7 +12,11 @@ import {
   Image,
 } from "@mantine/core";
 import WeatherChart from "./WeatherChart";
-import { convertToCelsius, convertToFahrenheit } from "../utilities/utilities";
+import {
+  convertToCelsius,
+  convertToFahrenheit,
+  formatDateTime,
+} from "../utilities/utilities";
 import { alpha } from "@mantine/core";
 
 import WeatherStore from "../stores/WeatherStore";
@@ -32,6 +36,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
     wind,
     weather,
     forecastList,
+    timezone,
   } = data;
 
   const handleClose = () => {
@@ -39,6 +44,20 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
   };
 
   const iconURL = "http://openweathermap.org/img/w/" + weather.icon + ".png";
+
+  const [formattedDate, setFormattedDate] = React.useState<string | null>(null);
+
+  // TODO sync refresh for every cards at once
+  React.useEffect(() => {
+    setFormattedDate(formatDateTime(timezone));
+    const interval = setInterval(() => {
+      setFormattedDate(formatDateTime(timezone));
+    }, 60000); // Run every minute (60000 milliseconds)
+
+    return () => {
+      clearInterval(interval); // Cleanup interval on component unmount
+    };
+  }, [timezone]); // Run the effect only when timezone changes
   return (
     <Card
       shadow="md"
@@ -50,7 +69,11 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
     >
       <CardSection>
         <Group justify="end">
-          <CloseButton variant="transparent" onClick={handleClose} />
+          <CloseButton
+            size={"sm"}
+            variant="transparent"
+            onClick={handleClose}
+          />
         </Group>
       </CardSection>
 
@@ -59,10 +82,10 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
           <Title order={5}>
             {cityName}, {countryName}
           </Title>
-          <Text>Fri, 19 February, 10:17</Text>
-        </Stack>{" "}
+          <Text size="lg">{formattedDate}</Text>
+        </Stack>
         <Image src={iconURL} />
-        <Text>{weather.main}</Text>
+        <Text c={"dimmed"}>{weather.main}</Text>
       </Group>
       {/* TODO: add a library for charting in react and use it here to show temp by day */}
       <WeatherChart forecastList={forecastList} tempType={tempType} />
@@ -71,7 +94,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
           {tempType === "C" ? (
             <>
               <Group justify="end" gap={2} align="start">
-                <Text size="xl">{convertToCelsius(temperature.actual)}</Text>
+                <Text fz="xxxl">{convertToCelsius(temperature.actual)}</Text>
                 <Text
                   flex={1}
                   style={{ cursor: "pointer" }}
@@ -90,7 +113,9 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
           ) : (
             <>
               <Group justify="end" gap={2} align="start">
-                <Text size="xl">{convertToFahrenheit(temperature.actual)}</Text>
+                <Text size="xxxl">
+                  {convertToFahrenheit(temperature.actual)}
+                </Text>
                 <Text
                   flex={1}
                   style={{ cursor: "pointer" }}

@@ -12,12 +12,21 @@ import {
 } from "@tanstack/react-query";
 import "@mantine/core/styles.css";
 import "@mantine/charts/styles.css";
-import { createTheme, MantineProvider } from "@mantine/core";
+import { createTheme, MantineProvider, rem } from "@mantine/core";
 import { RootStoreContext } from "./root-store-context";
 import RootStore from "./stores/RootStore";
 
 const theme = createTheme({
   fontFamily: "Poppins, sans-serif",
+  fontSizes: {
+    xs: rem(10),
+    sm: rem(11),
+    md: rem(14),
+    lg: rem(16),
+    xl: rem(20),
+    xxl: rem(24),
+    xxxl: rem(32),
+  },
 });
 
 const queryClient = new QueryClient();
