@@ -1,7 +1,6 @@
 import React from "react";
 
 import "./App.css";
-import MyComponent from "./components/Test";
 import WeatherDashboard from "./containers/WeatherDashboard";
 import SearchBar from "./components/SearchBar";
 

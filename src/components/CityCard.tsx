@@ -2,34 +2,86 @@
 import React from "react";
 import { WeatherData } from "../types/weather.types";
 import { Card, Group, Stack, Text, Title } from "@mantine/core";
-import { Chart } from "./Chart";
+import WeatherChart from "./WeatherChart";
+import { convertToCelsius, convertToFahrenheit } from "../utilities/utilities";
 
 interface CityCardProps {
   data: WeatherData;
 }
 
 const CityCard: React.FC<CityCardProps> = ({ data }) => {
-  const { name, main, weather } = data;
+  const [tempType, setTempType] = React.useState<"C" | "F">("C");
+  console.warn(data);
+  const {
+    cityName,
+    countryName,
+    pressure,
+    humidity,
+    temperature,
+    wind,
+    weather,
+    forecastList,
+  } = data;
+  console.log(tempType);
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder w={400}>
+    <Card shadow="md" padding="lg" radius="md" withBorder w={350}>
       <Group justify="space-between" align="start">
         <Stack>
-          <Title order={3}>{name}</Title>
+          <Title order={5}>
+            {cityName}, {countryName}
+          </Title>
           <Text>Fri, 19 February, 10:17</Text>
         </Stack>
-        <Text>{weather[0].main}</Text>
+        <Text>{weather.main}</Text>
       </Group>
-      {/* TODO: GRAPH */}
-      <Chart />
+      {/* TODO: add a library for charting in react and use it here to show temp by day */}
+      <WeatherChart forecastList={forecastList} tempType={tempType} />
       <Group justify="space-between">
         <Stack>
-          <Text>{main.temp} K</Text>
-          <Text>{main.feels_like} K</Text>
+          {tempType === "C" ? (
+            <>
+              <Group justify="end" gap={2} align="start">
+                <Text size="xl">{convertToCelsius(temperature.actual)}</Text>
+                <Text
+                  flex={1}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setTempType("F")}
+                >
+                  °C |{" "}
+                  <Text component="span" c={"dimmed"}>
+                    °F
+                  </Text>
+                </Text>
+              </Group>
+              <Text size="xs" c={"dimmed"}>
+                Feels like: {convertToCelsius(temperature.feels_like)}°C
+              </Text>
+            </>
+          ) : (
+            <>
+              <Group justify="end" gap={2} align="start">
+                <Text size="xl">{convertToFahrenheit(temperature.actual)}</Text>
+                <Text
+                  flex={1}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setTempType("C")}
+                >
+                  <Text component="span" c={"dimmed"}>
+                    °C{" "}
+                  </Text>
+                  | °F
+                </Text>
+              </Group>
+              <Text size="xs" c={"dimmed"}>
+                Feels like: {convertToFahrenheit(temperature.feels_like)}°F
+              </Text>
+            </>
+          )}
         </Stack>
         <Stack>
-          <Text>Wind: {data.wind.speed} m/s</Text>
-          <Text>Humidity: {main.humidity}%</Text>
-          <Text>Pressure: {main.pressure} hPa</Text>
+          <Text>Wind: {wind} m/s</Text>
+          <Text>Humidity: {humidity}%</Text>
+          <Text>Pressure: {pressure} hPa</Text>
         </Stack>
       </Group>
       {/* Convert to °C if necessary */}

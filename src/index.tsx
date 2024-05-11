@@ -11,12 +11,13 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import "@mantine/core/styles.css";
+import "@mantine/charts/styles.css";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { RootStoreContext } from "./root-store-context";
 import RootStore from "./stores/RootStore";
 
 const theme = createTheme({
-  /** Put your mantine theme override here */
+  fontFamily: "Poppins, sans-serif",
 });
 
 const queryClient = new QueryClient();

@@ -2,7 +2,7 @@
 import axios from "axios";
 import { WeatherData } from "../types/weather.types";
 
-const API_KEY = "YOUR_API";
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
 export const getWeatherByCoordinates = async (
   lat: number,
@@ -20,7 +20,31 @@ export const getWeatherByCoordinates = async (
       }
     );
 
-    return response.data;
+    // Get forecast
+    const forecast = await getForecastByCityName(response.data.name);
+
+    // removing unnecessary data from the response
+    const filteredData = {
+      coords: {
+        lon: response.data.coord.lon,
+        lat: response.data.coord.lat,
+      },
+      temperature: {
+        actual: response.data.main.temp,
+        feels_like: response.data.main.feels_like,
+      },
+      humidity: response.data.main.humidity,
+      pressure: response.data.main.pressure,
+      wind: response.data.wind.speed,
+      weather: response.data.weather[0],
+      cityName: response.data.name,
+
+      countryName: forecast.city.country,
+      forecastList: forecast.list,
+    };
+
+    console.log(filteredData);
+    return filteredData;
   } catch (error) {
     console.error("Error fetching weather data:", error);
     throw error;
@@ -40,7 +64,31 @@ export const getWeatherByCityName = async (
         },
       }
     );
-    return response.data;
+    // Get forecast
+    const forecast = await getForecastByCityName(response.data.name);
+
+    // removing unnecessary data from the response
+    const filteredData = {
+      coords: {
+        lon: response.data.coord.lon,
+        lat: response.data.coord.lat,
+      },
+      temperature: {
+        actual: response.data.main.temp,
+        feels_like: response.data.main.feels_like,
+      },
+      humidity: response.data.main.humidity,
+      pressure: response.data.main.pressure,
+      wind: response.data.wind.speed,
+      weather: response.data.weather[0],
+      cityName: response.data.name,
+
+      countryName: forecast.city.country,
+      forecastList: forecast.list,
+    };
+
+    console.log(filteredData);
+    return filteredData;
   } catch (error) {
     console.error("Error fetching weather data by city name:", error);
     throw error;

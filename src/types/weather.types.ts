@@ -1,32 +1,25 @@
 // types/weather.types.ts
 export interface WeatherData {
-  coord: {
+  coords: {
     lon: number;
     lat: number;
   };
-  weather: [
-    {
-      id: number;
-      main: string;
-      description: string;
-      icon: string;
-    }
-  ];
-  main: {
-    temp: number;
+  weather: {
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
+  };
+
+  humidity: number;
+  pressure: number;
+  wind: number;
+  temperature: {
+    actual: number;
     feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
   };
-  wind: {
-    speed: number;
-    deg: number;
-    gust: number;
-  };
-  clouds: {
-    all: number;
-  };
-  name: string; // City name
+
+  cityName: string; // City name
+  countryName: string;
+  forecastList: any;
 }

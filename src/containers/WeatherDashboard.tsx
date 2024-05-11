@@ -8,6 +8,7 @@ import {
 } from "../services/weatherService";
 import { WeatherData } from "../types/weather.types";
 import WeatherStore from "../stores/WeatherStore";
+import { SimpleGrid, Group } from "@mantine/core";
 
 const WeatherDashboard = observer(() => {
   const { location: userLocation, error: locationError } = useUserLocation();
@@ -25,19 +26,18 @@ const WeatherDashboard = observer(() => {
         );
     }
   }, [userLocation]);
-  //   WeatherStore.addWeatherData(userCityWeather);
-  // Render the dashboard with a card for the user's location and other added cities
-  console.log(getForecastByCityName("Minsk"));
   return (
     <div className="weather-dashboard">
       {locationError && <p>Error getting location: {locationError}</p>}
-      {userCityWeather && <CityCard data={userCityWeather} />}
+      <Group justify="center" w={"100%"} p={10}>
+        {userCityWeather && <CityCard data={userCityWeather} />}
 
-      {WeatherStore.weatherList.map(
-        (weatherData: WeatherData, index: number) => (
-          <CityCard key={index} data={weatherData} />
-        )
-      )}
+        {WeatherStore.weatherList.map(
+          (weatherData: WeatherData, index: number) => (
+            <CityCard key={index} data={weatherData} />
+          )
+        )}
+      </Group>
     </div>
   );
 });
