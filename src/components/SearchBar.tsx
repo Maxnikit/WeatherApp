@@ -1,6 +1,6 @@
 // components/SearchBar.tsx
 import React, { useState } from "react";
-import { TextInput, Button, Group } from "@mantine/core";
+import { TextInput, Button, Group, Center } from "@mantine/core";
 import { getWeatherByCityName } from "../services/weatherService";
 import { WeatherData } from "../types/weather.types";
 import WeatherStore from "../stores/WeatherStore";
@@ -26,16 +26,18 @@ const SearchBar = () => {
   };
 
   return (
-    <form onSubmit={handleSearch}>
-      <Group>
-        <TextInput
-          placeholder="Enter city name"
-          value={cityName}
-          onChange={(event) => setCityName(event.currentTarget.value)}
-        />
-        <Button type="submit">Get weather</Button>
-      </Group>
-    </form>
+    <Center mb={40} mt={50}>
+      <form onSubmit={handleSearch}>
+        <Group>
+          <TextInput
+            placeholder="Enter city name"
+            value={cityName}
+            onChange={(event) => setCityName(event.currentTarget.value)}
+          />
+          <Button type="submit">Get weather</Button>
+        </Group>
+      </form>
+    </Center>
   );
 };
 

@@ -10,12 +10,17 @@ class WeatherStore {
   }
 
   addWeatherData = (weatherData: WeatherData) => {
+    // check if city is already added to prevent dublicates
+    const isCityAlreadyInList = this.weatherList.find(
+      (city) => city.cityName === weatherData.cityName
+    );
+    if (isCityAlreadyInList) return;
+
+    // add city to list
     this.weatherList.push(weatherData);
   };
 
   removeWeatherData = (cityName: string) => {
-    console.log("city to remove: ", cityName);
-    console.log("weatherList: ", this.weatherList);
     this.weatherList = this.weatherList.filter(
       (city) => city.cityName !== cityName
     );
