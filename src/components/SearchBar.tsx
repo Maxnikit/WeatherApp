@@ -1,9 +1,18 @@
 // components/SearchBar.tsx
 import React, { useState } from "react";
-import { TextInput, Button, Group, Center } from "@mantine/core";
+import {
+  TextInput,
+  Button,
+  Group,
+  Center,
+  Autocomplete,
+  ComboboxItem,
+  OptionsFilter,
+} from "@mantine/core";
 import { getWeatherByCityName } from "../services/weatherService";
 import { WeatherData } from "../types/weather.types";
 import WeatherStore from "../stores/WeatherStore";
+import cities from "cities.json";
 
 type SearchBarProps = {
   setWeatherData: (weather: WeatherData) => void;
@@ -24,15 +33,34 @@ const SearchBar = () => {
       console.log(error);
     }
   };
+  const citiesArray: { name: string }[] = cities;
 
+  const removeDuplicates = (arr: { name: string }[]) => {
+    const uniqueNames = {};
+    const uniqueArray = [];
+
+    for (const obj of arr) {
+      const { name } = obj;
+      if (!uniqueNames[name]) {
+        uniqueNames[name] = true;
+        uniqueArray.push(obj);
+      }
+    }
+
+    return uniqueArray;
+  };
+  const cityArrayWithoutDuplicates = removeDuplicates(citiesArray);
   return (
     <Center mb={40} mt={50}>
       <form onSubmit={handleSearch}>
         <Group>
-          <TextInput
+          <Autocomplete
             placeholder="Enter city name"
             value={cityName}
-            onChange={(event) => setCityName(event.currentTarget.value)}
+            onChange={setCityName}
+            data={cityArrayWithoutDuplicates.map((city) => city.name)}
+            // filter={optionsFilter}
+            limit={3}
           />
           <Button type="submit">Get weather</Button>
         </Group>
