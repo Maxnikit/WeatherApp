@@ -14,24 +14,28 @@ const SearchBar = () => {
   const { addWeatherData } = WeatherStore;
   const [cityName, setCityName] = useState("");
 
-  const handleSearch = async () => {
+  const handleSearch = async (event: any) => {
+    event.preventDefault();
     try {
       const weather = await getWeatherByCityName(cityName);
       addWeatherData(weather);
+      setCityName("");
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <Group>
-      <TextInput
-        placeholder="Enter city name"
-        value={cityName}
-        onChange={(event) => setCityName(event.currentTarget.value)}
-      />
-      <Button onClick={handleSearch}>Get weather</Button>
-    </Group>
+    <form onSubmit={handleSearch}>
+      <Group>
+        <TextInput
+          placeholder="Enter city name"
+          value={cityName}
+          onChange={(event) => setCityName(event.currentTarget.value)}
+        />
+        <Button type="submit">Get weather</Button>
+      </Group>
+    </form>
   );
 };
 

@@ -13,12 +13,13 @@ class WeatherStore {
     this.weatherList.push(weatherData);
   };
 
-  //   TODO: find something in place of cityID to remove cities
-  //   removeWeatherData = (cityId: number) => {
-  //     this.weatherList = this.weatherList.filter(
-  //       (data) => data.cityId !== cityId
-  //     );
-  //   };
+  removeWeatherData = (cityName: string) => {
+    console.log("city to remove: ", cityName);
+    console.log("weatherList: ", this.weatherList);
+    this.weatherList = this.weatherList.filter(
+      (city) => city.cityName !== cityName
+    );
+  };
 
   clearWeatherData = () => {
     this.weatherList = [];

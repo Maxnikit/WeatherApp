@@ -15,17 +15,27 @@ const WeatherDashboard = observer(() => {
   const [userCityWeather, setUserCityWeather] = useState<WeatherData | null>(
     null
   );
+  const { addWeatherData } = WeatherStore;
 
   // Fetch user's current location weather on mount
   useEffect(() => {
-    if (userLocation) {
-      getWeatherByCoordinates(userLocation.lat, userLocation.lon)
-        .then(setUserCityWeather)
-        .catch((error) =>
-          console.error("Error getting user city weather:", error)
-        );
-    }
+    const fetchUserLocationWeather = async () => {
+      if (userLocation) {
+        try {
+          const weather = await getWeatherByCoordinates(
+            userLocation.lat,
+            userLocation.lon
+          );
+          addWeatherData(weather);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchUserLocationWeather();
   }, [userLocation]);
+
   return (
     <div className="weather-dashboard">
       {locationError && <p>Error getting location: {locationError}</p>}

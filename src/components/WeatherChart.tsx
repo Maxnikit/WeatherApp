@@ -8,7 +8,6 @@ interface Props {
   tempType: TemperatureUnit;
 }
 function WeatherChart({ forecastList, tempType }: Props) {
-  console.warn(tempType);
   // Get the forecast data for each day
   const daysMap = new Map();
 

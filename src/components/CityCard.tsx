@@ -13,7 +13,8 @@ import {
 import WeatherChart from "./WeatherChart";
 import { convertToCelsius, convertToFahrenheit } from "../utilities/utilities";
 import { alpha } from "@mantine/core";
-import { inherits } from "util";
+
+import WeatherStore from "../stores/WeatherStore";
 
 interface CityCardProps {
   data: WeatherData;
@@ -21,7 +22,6 @@ interface CityCardProps {
 
 const CityCard: React.FC<CityCardProps> = ({ data }) => {
   const [tempType, setTempType] = React.useState<"C" | "F">("C");
-  console.warn(data);
   const {
     cityName,
     countryName,
@@ -32,7 +32,10 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
     weather,
     forecastList,
   } = data;
-  console.log(tempType);
+
+  const handleClose = () => {
+    WeatherStore.removeWeatherData(cityName);
+  };
   return (
     <Card
       shadow="md"
@@ -44,7 +47,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
     >
       <CardSection>
         <Group justify="end">
-          <CloseButton bg="inherit" />
+          <CloseButton variant="transparent" onClick={handleClose} />
         </Group>
       </CardSection>
 
