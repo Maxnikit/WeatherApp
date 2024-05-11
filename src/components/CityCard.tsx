@@ -1,9 +1,19 @@
 // components/CityCard.tsx
 import React from "react";
 import { WeatherData } from "../types/weather.types";
-import { Card, Group, Stack, Text, Title } from "@mantine/core";
+import {
+  Card,
+  CardSection,
+  CloseButton,
+  Group,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import WeatherChart from "./WeatherChart";
 import { convertToCelsius, convertToFahrenheit } from "../utilities/utilities";
+import { alpha } from "@mantine/core";
+import { inherits } from "util";
 
 interface CityCardProps {
   data: WeatherData;
@@ -24,7 +34,20 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
   } = data;
   console.log(tempType);
   return (
-    <Card shadow="md" padding="lg" radius="md" withBorder w={350}>
+    <Card
+      shadow="md"
+      padding="lg"
+      radius="md"
+      withBorder
+      w={350}
+      bg={alpha("#4578FC", 0.1)}
+    >
+      <CardSection>
+        <Group justify="end">
+          <CloseButton bg="inherit" />
+        </Group>
+      </CardSection>
+
       <Group justify="space-between" align="start">
         <Stack>
           <Title order={5}>
