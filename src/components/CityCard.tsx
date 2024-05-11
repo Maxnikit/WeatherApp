@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
   Title,
+  Image,
 } from "@mantine/core";
 import WeatherChart from "./WeatherChart";
 import { convertToCelsius, convertToFahrenheit } from "../utilities/utilities";
@@ -36,10 +37,12 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
   const handleClose = () => {
     WeatherStore.removeWeatherData(cityName);
   };
+
+  const iconURL = "http://openweathermap.org/img/w/" + weather.icon + ".png";
   return (
     <Card
       shadow="md"
-      padding="lg"
+      padding="md"
       radius="md"
       withBorder
       w={350}
@@ -57,7 +60,8 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
             {cityName}, {countryName}
           </Title>
           <Text>Fri, 19 February, 10:17</Text>
-        </Stack>
+        </Stack>{" "}
+        <Image src={iconURL} />
         <Text>{weather.main}</Text>
       </Group>
       {/* TODO: add a library for charting in react and use it here to show temp by day */}

@@ -12,12 +12,9 @@ import {
 import { getWeatherByCityName } from "../services/weatherService";
 import { WeatherData } from "../types/weather.types";
 import WeatherStore from "../stores/WeatherStore";
-import cities from "cities.json";
-
-type SearchBarProps = {
-  setWeatherData: (weather: WeatherData) => void;
-  setWeatherError: (error: any) => void;
-};
+// import cities from "cities.json";
+// import Autocomplete from "react-google-autocomplete";
+// import { usePlacesWidget } from "react-google-autocomplete";
 
 const SearchBar = () => {
   const { addWeatherData } = WeatherStore;
@@ -33,23 +30,7 @@ const SearchBar = () => {
       console.log(error);
     }
   };
-  const citiesArray: { name: string }[] = cities;
 
-  const removeDuplicates = (arr: { name: string }[]) => {
-    const uniqueNames = {};
-    const uniqueArray = [];
-
-    for (const obj of arr) {
-      const { name } = obj;
-      if (!uniqueNames[name]) {
-        uniqueNames[name] = true;
-        uniqueArray.push(obj);
-      }
-    }
-
-    return uniqueArray;
-  };
-  const cityArrayWithoutDuplicates = removeDuplicates(citiesArray);
   return (
     <Center mb={40} mt={50}>
       <form onSubmit={handleSearch}>
@@ -58,8 +39,8 @@ const SearchBar = () => {
             placeholder="Enter city name"
             value={cityName}
             onChange={setCityName}
-            data={cityArrayWithoutDuplicates.map((city) => city.name)}
-            // filter={optionsFilter}
+            // data={cityArrayWithoutDuplicates.map((city: any) => city.name)}
+
             limit={3}
           />
           <Button type="submit">Get weather</Button>

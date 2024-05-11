@@ -38,6 +38,7 @@ export const getWeatherByCoordinates = async (
       wind: response.data.wind.speed,
       weather: response.data.weather[0],
       cityName: response.data.name,
+      
 
       countryName: forecast.city.country,
       forecastList: forecast.list,
