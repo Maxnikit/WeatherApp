@@ -1,5 +1,6 @@
 // src/stores/WeatherStore.ts
 import { makeAutoObservable } from "mobx";
+import { makePersistable } from "mobx-persist-store";
 import { WeatherData } from "../types/weather.types";
 
 class WeatherStore {
@@ -7,6 +8,12 @@ class WeatherStore {
 
   constructor() {
     makeAutoObservable(this);
+
+    makePersistable(this, {
+      name: "WeatherStore",
+      properties: ["weatherList"],
+      storage: window.localStorage,
+    });
   }
 
   addWeatherData = (weatherData: WeatherData) => {
