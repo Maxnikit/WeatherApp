@@ -12,7 +12,6 @@ const convertToFahrenheit = (k: number) => {
 function formatDateTime(utcShift: number) {
   const shiftInMilliseconds = utcShift * 1000;
   const threeHoursInMilliseconds = 3 * 60 * 60 * 1000;
-  console.warn(shiftInMilliseconds);
   const currentTime = new Date(
     Date.now() + shiftInMilliseconds - threeHoursInMilliseconds
   );

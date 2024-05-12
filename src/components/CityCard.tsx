@@ -1,5 +1,5 @@
 // components/CityCard.tsx
-import React, { useEffect } from "react";
+import React from "react";
 import { WeatherData } from "../types/weather.types";
 import {
   Card,
@@ -9,7 +9,6 @@ import {
   Stack,
   Text,
   Title,
-  Image,
 } from "@mantine/core";
 import WeatherChart from "./WeatherChart";
 import {
@@ -106,7 +105,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
                   </Text>
                 </Text>
               </Group>
-              <Text size="xs" c={"dimmed"}>
+              <Text size="md" c={"dimmed"}>
                 Feels like: {convertToCelsius(temperature.feels_like)}°C
               </Text>
             </>
@@ -127,16 +126,31 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
                   | °F
                 </Text>
               </Group>
-              <Text size="xs" c={"dimmed"}>
+              <Text size="md" c={"dimmed"}>
                 Feels like: {convertToFahrenheit(temperature.feels_like)}°F
               </Text>
             </>
           )}
         </Stack>
-        <Stack>
-          <Text>Wind: {wind} m/s</Text>
-          <Text>Humidity: {humidity}%</Text>
-          <Text>Pressure: {pressure} hPa</Text>
+        <Stack align="end" gap={5}>
+          <Text>
+            Wind:{" "}
+            <Text component="span" c={"blue"} fw={600}>
+              {wind} m/s
+            </Text>
+          </Text>
+          <Text>
+            Humidity:{" "}
+            <Text component="span" c={"blue"} fw={600}>
+              {humidity}%
+            </Text>
+          </Text>
+          <Text>
+            Pressure:{" "}
+            <Text component="span" c={"blue"} fw={600}>
+              {pressure}Pa
+            </Text>
+          </Text>
         </Stack>
       </Group>
       {/* Convert to °C if necessary */}
