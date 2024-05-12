@@ -84,7 +84,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
           </Title>
           <Text size="lg">{formattedDate}</Text>
         </Stack>
-        <Image src={iconURL} />
+        <img src={iconURL} alt="current weather icon" />
         <Text c={"dimmed"}>{weather.main}</Text>
       </Group>
       {/* TODO: add a library for charting in react and use it here to show temp by day */}
