@@ -63,7 +63,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
       padding="md"
       radius="md"
       withBorder
-      w={350}
+      w={380}
       bg={alpha("#4578FC", 0.1)}
     >
       <CardSection>
