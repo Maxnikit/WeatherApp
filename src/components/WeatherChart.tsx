@@ -1,16 +1,6 @@
 import { AreaChart } from "@mantine/charts";
 
 import { convertToCelsius, convertToFahrenheit } from "../utilities/utilities";
-import {
-  Area,
-  // AreaChart,
-  CartesianGrid,
-  LabelList,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 
 type TemperatureUnit = "C" | "F";
 interface Props {
@@ -53,11 +43,13 @@ function WeatherChart({ forecastList, tempType }: Props) {
   const daysArray = Array.from(daysMap.values());
 
   let yAxis = "";
-
+  let zeroTemp = 0;
   if (tempType === "C") {
     yAxis = "temp.celsius";
+    zeroTemp = 0;
   } else if (tempType === "F") {
     yAxis = "temp.fahrenheit";
+    zeroTemp = 32;
   }
 
   // TODO Решить, использовать Mantine Charts или Recharts
@@ -65,7 +57,7 @@ function WeatherChart({ forecastList, tempType }: Props) {
     const { x, y, value } = props;
 
     // TODO find a way to only remove 0 from start and end of chart
-    if (value === 0) {
+    if (value === zeroTemp) {
       return null;
     }
 
@@ -92,14 +84,13 @@ function WeatherChart({ forecastList, tempType }: Props) {
   };
 
   return (
-    // MANTINE
     <AreaChart
       my={20}
       h={120}
       data={[
-        { date: "Start", temp: { celsius: 0 } }, // Start point at 0
+        { date: "Start", temp: { celsius: 0, fahrenheit: 32 } }, // Start point at 0
         ...daysArray,
-        { date: "End", temp: { celsius: 0 } }, // End point at 0
+        { date: "End", temp: { celsius: 0, fahrenheit: 32 } }, // End point at 0
       ]}
       dataKey="date"
       series={[
@@ -112,7 +103,7 @@ function WeatherChart({ forecastList, tempType }: Props) {
       withGradient
       withTooltip={false}
       strokeWidth={0}
-      type="stacked"
+      // type="stacked"
       textColor="gray.5"
       gridAxis="none"
       withYAxis={false}
@@ -124,34 +115,6 @@ function WeatherChart({ forecastList, tempType }: Props) {
           date === "Start" || date === "End" ? "" : date,
       }}
     />
-
-    // RECHARTS
-    // <ResponsiveContainer width="100%" height={140}>
-    //   <AreaChart
-    //     data={daysArray}
-    //     margin={{ top: 20, right: 20, bottom: 0, left: 20 }}
-    //   >
-    //     <defs>
-    //       <linearGradient id="colorTemperature" x1="0" y1="0" x2="0" y2="1">
-    //         <stop offset="5%" stopColor="#4C51BF" stopOpacity={0.8} />
-    //         <stop offset="95%" stopColor="#4C51BF" stopOpacity={0} />
-    //       </linearGradient>
-    //     </defs>
-    //     <XAxis dataKey="date" />
-    //     <Area
-    //       type="bump"
-    //       dataKey="temp.celsius"
-    //       stroke="#4C51BF"
-    //       strokeWidth={0.5}
-    //       fillOpacity={1}
-    //       fill="url(#colorTemperature)"
-    //       stackId="1"
-    //       label
-    //     >
-    //       <LabelList dataKey="temp.celsius" position="top" />
-    //     </Area>
-    //   </AreaChart>
-    // </ResponsiveContainer>
   );
 }
 export default WeatherChart;
