@@ -1,9 +1,16 @@
 const convertToCelsius = (k: number) => {
-  return (k - 273.15).toFixed(1);
+  return +(k - 273.15).toFixed(0);
 };
 
 const convertToFahrenheit = (k: number) => {
-  return (((k - 273.15) * 9) / 5 + 32).toFixed(0);
+  return +(((k - 273.15) * 9) / 5 + 32).toFixed(0);
+};
+
+const formatTemp = (k: number) => {
+  if (k > 0) {
+    return `+${k}`;
+  }
+  return k;
 };
 
 // BUG: Date.now() uses timezone of system, not UTC 0
@@ -32,4 +39,4 @@ function formatDateTime(utcShift: number) {
   return `${dayOfWeek}, ${date}, ${time}`;
 }
 
-export { convertToCelsius, convertToFahrenheit, formatDateTime };
+export { convertToCelsius, convertToFahrenheit, formatDateTime, formatTemp };

@@ -15,6 +15,7 @@ import {
   convertToCelsius,
   convertToFahrenheit,
   formatDateTime,
+  formatTemp,
 } from "../utilities/utilities";
 import { alpha } from "@mantine/core";
 
@@ -86,14 +87,17 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
         <img src={iconURL} alt="current weather icon" />
         <Text c={"gray.5"}>{weather.main}</Text>
       </Group>
-      {/* TODO: add a library for charting in react and use it here to show temp by day */}
+
       <WeatherChart forecastList={forecastList} tempType={tempType} />
+
       <Group justify="space-between">
         <Stack>
           {tempType === "C" ? (
             <>
               <Group justify="end" gap={2} align="start">
-                <Text fz="xxxl">{convertToCelsius(temperature.actual)}</Text>
+                <Text fz="xxxl">
+                  {formatTemp(convertToCelsius(temperature.actual))}
+                </Text>
                 <Text
                   flex={1}
                   style={{ cursor: "pointer" }}
@@ -106,14 +110,15 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
                 </Text>
               </Group>
               <Text size="md" c={"gray.5"}>
-                Feels like: {convertToCelsius(temperature.feels_like)}°C
+                Feels like:{" "}
+                {formatTemp(convertToCelsius(temperature.feels_like))}°C
               </Text>
             </>
           ) : (
             <>
               <Group justify="end" gap={2} align="start">
                 <Text size="xxxl">
-                  {convertToFahrenheit(temperature.actual)}
+                  {formatTemp(convertToFahrenheit(temperature.actual))}
                 </Text>
                 <Text
                   flex={1}
@@ -127,11 +132,13 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
                 </Text>
               </Group>
               <Text size="md" c={"gray.5"}>
-                Feels like: {convertToFahrenheit(temperature.feels_like)}°F
+                Feels like:{" "}
+                {formatTemp(convertToFahrenheit(temperature.feels_like))}°F
               </Text>
             </>
           )}
         </Stack>
+
         <Stack align="end" gap={5}>
           <Text>
             Wind:{" "}
@@ -153,7 +160,6 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
           </Text>
         </Stack>
       </Group>
-      {/* Convert to °C if necessary */}
     </Card>
   );
 };

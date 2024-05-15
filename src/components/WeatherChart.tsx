@@ -62,7 +62,6 @@ function WeatherChart({ forecastList, tempType }: Props) {
 
   // TODO Решить, использовать Mantine Charts или Recharts
   const renderCustomLabel = (props: any) => {
-    console.log(props);
     const { x, y, value } = props;
 
     // TODO find a way to only remove 0 from start and end of chart
@@ -72,17 +71,22 @@ function WeatherChart({ forecastList, tempType }: Props) {
 
     // Equal to gray.5 from Mantine Colors
     const labelColor = "rgb(173, 181, 189)";
-
+    let verticalOffset = 0;
+    if (value > 0) {
+      verticalOffset = -7;
+    } else {
+      verticalOffset = 14;
+    }
     return (
       <text
         x={x}
         y={y}
-        dy={-7}
+        dy={verticalOffset}
         fill={labelColor}
         fontSize={10}
         textAnchor="middle"
       >
-        {value.toFixed(0)}
+        {value}
       </text>
     );
   };
