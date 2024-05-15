@@ -105,7 +105,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
                   </Text>
                 </Text>
               </Group>
-              <Text size="md" c={"dimmed"}>
+              <Text size="md" c={"gray.5"}>
                 Feels like: {convertToCelsius(temperature.feels_like)}°C
               </Text>
             </>
@@ -126,7 +126,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
                   | °F
                 </Text>
               </Group>
-              <Text size="md" c={"dimmed"}>
+              <Text size="md" c={"gray.5"}>
                 Feels like: {convertToFahrenheit(temperature.feels_like)}°F
               </Text>
             </>

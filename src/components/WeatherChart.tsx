@@ -82,7 +82,7 @@ function WeatherChart({ forecastList, tempType }: Props) {
         fontSize={10}
         textAnchor="middle"
       >
-        {value}
+        {value.toFixed(0)}
       </text>
     );
   };
