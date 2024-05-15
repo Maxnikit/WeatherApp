@@ -18,8 +18,8 @@ const theme = createTheme({
     md: rem(14),
     lg: rem(16),
     xl: rem(20),
-    xxl: rem(24),
-    xxxl: rem(32),
+    tempUnit: rem(25),
+    tempValue: rem(50),
   },
 });
 

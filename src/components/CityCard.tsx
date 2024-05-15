@@ -67,65 +67,71 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
       w={380}
       bg={alpha("#4578FC", 0.1)}
     >
-      <CardSection>
-        <Group justify="end">
-          <CloseButton
-            size={"sm"}
-            variant="transparent"
-            onClick={handleClose}
-          />
-        </Group>
-      </CardSection>
-
-      <Group justify="space-between" align="start">
-        <Stack>
-          <Title order={5}>
-            {cityName}, {countryName}
-          </Title>
-          <Text size="lg">{formattedDate}</Text>
-        </Stack>
-        <img src={iconURL} alt="current weather icon" />
-        <Text c={"gray.5"}>{weather.main}</Text>
-      </Group>
-
-      <WeatherChart forecastList={forecastList} tempType={tempType} />
+      <CloseButton
+        pos="absolute"
+        top="0px"
+        right="0px"
+        size={"sm"}
+        variant="transparent"
+        onClick={handleClose}
+      />
 
       <Group justify="space-between">
-        <Stack>
+        <Title order={4} flex={1} fw={500}>
+          {cityName}, {countryName}
+        </Title>
+        <Group>
+          <img src={iconURL} width={40} alt="current weather icon" />
+          <Text c={"gray.5"} pr={10}>
+            {weather.main}
+          </Text>
+        </Group>
+      </Group>
+      <Title order={4} fw={300}>
+        {formattedDate}
+      </Title>
+      <WeatherChart forecastList={forecastList} tempType={tempType} />
+
+      <Group justify="space-between" align="end">
+        <Stack gap={0}>
           {tempType === "C" ? (
             <>
-              <Group justify="end" gap={2} align="start">
-                <Text fz="xxxl">
+              <Group gap={2} align="start">
+                <Text fz="tempValue">
                   {formatTemp(convertToCelsius(temperature.actual))}
                 </Text>
                 <Text
+                  fz="tempUnit"
                   flex={1}
                   style={{ cursor: "pointer" }}
                   onClick={() => setTempType("F")}
                 >
                   °C |{" "}
-                  <Text component="span" c={"dimmed"}>
+                  <Text fz="tempUnit" component="span" c={"dimmed"}>
                     °F
                   </Text>
                 </Text>
               </Group>
               <Text size="md" c={"gray.5"}>
                 Feels like:{" "}
-                {formatTemp(convertToCelsius(temperature.feels_like))}°C
+                <Text component="span" fw={600}>
+                  {formatTemp(convertToCelsius(temperature.feels_like))} °C
+                </Text>
               </Text>
             </>
           ) : (
             <>
-              <Group justify="end" gap={2} align="start">
-                <Text size="xxxl">
+              <Group gap={2} align="start">
+                <Text size="tempValue">
                   {formatTemp(convertToFahrenheit(temperature.actual))}
                 </Text>
                 <Text
+                  fz="tempUnit"
                   flex={1}
                   style={{ cursor: "pointer" }}
                   onClick={() => setTempType("C")}
                 >
-                  <Text component="span" c={"dimmed"}>
+                  <Text fz="tempUnit" component="span" c={"dimmed"}>
                     °C{" "}
                   </Text>
                   | °F
@@ -133,7 +139,9 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
               </Group>
               <Text size="md" c={"gray.5"}>
                 Feels like:{" "}
-                {formatTemp(convertToFahrenheit(temperature.feels_like))}°F
+                <Text component="span" fw={600}>
+                  {formatTemp(convertToFahrenheit(temperature.feels_like))} °F
+                </Text>
               </Text>
             </>
           )}
@@ -143,7 +151,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
           <Text>
             Wind:{" "}
             <Text component="span" c={"blue"} fw={600}>
-              {wind} m/s
+              {wind.toFixed(1)} m/s
             </Text>
           </Text>
           <Text>

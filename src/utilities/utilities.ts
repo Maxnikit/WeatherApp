@@ -25,7 +25,7 @@ function formatDateTime(utcShift: number) {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const dayOfWeek = daysOfWeek[currentTime.getUTCDay()];
 
-  const date = currentTime.toLocaleDateString("en-US", {
+  const date = currentTime.toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
   });
@@ -33,7 +33,7 @@ function formatDateTime(utcShift: number) {
   const time = currentTime.toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "numeric",
-    hour12: true,
+    hour12: false,
   });
 
   return `${dayOfWeek}, ${date}, ${time}`;
