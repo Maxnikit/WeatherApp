@@ -23,14 +23,38 @@ class WeatherStore {
     );
     if (isCityAlreadyInList) return;
 
+    // Ensure tempType is set when adding new data
+    const defaultTempType = "C";
     // add city to list
-    this.weatherList.push(weatherData);
+    this.weatherList.push({
+      ...weatherData,
+      tempType: weatherData.tempType || defaultTempType,
+    });
   };
 
   removeWeatherData = (cityName: string) => {
     this.weatherList = this.weatherList.filter(
       (city) => city.cityName !== cityName
     );
+  };
+
+  updateWeatherDataTempType = (cityName: string, newTempType: "C" | "F") => {
+    console.log(cityName, newTempType);
+    const cityWeather = this.weatherList.find(
+      (city) => city.cityName === cityName
+    );
+    if (cityWeather) {
+      cityWeather.tempType = newTempType;
+    }
+  };
+
+  getTempTypeByCityName = (cityName: string): "C" | "F" => {
+    const cityWeather = this.weatherList.find(
+      (city) => city.cityName === cityName
+    );
+    if (cityWeather) {
+      return cityWeather.tempType;
+    } else return "C";
   };
 
   clearWeatherData = () => {

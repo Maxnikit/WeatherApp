@@ -18,7 +18,7 @@ export interface WeatherData {
     actual: number;
     feels_like: number;
   };
-
+  tempType: "C" | "F";
   cityName: string; // City name
   countryName: string;
   forecastList: any;

@@ -1,15 +1,7 @@
 // components/CityCard.tsx
 import React from "react";
 import { WeatherData } from "../types/weather.types";
-import {
-  Card,
-  CardSection,
-  CloseButton,
-  Group,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Card, CloseButton, Group, Stack, Text, Title } from "@mantine/core";
 import WeatherChart from "./WeatherChart";
 import {
   convertToCelsius,
@@ -18,15 +10,14 @@ import {
   formatTemp,
 } from "../utilities/utilities";
 import { alpha } from "@mantine/core";
-
 import WeatherStore from "../stores/WeatherStore";
+import { observer } from "mobx-react-lite";
 
 interface CityCardProps {
   data: WeatherData;
 }
 
-const CityCard: React.FC<CityCardProps> = ({ data }) => {
-  const [tempType, setTempType] = React.useState<"C" | "F">("C");
+const CityCard: React.FC<CityCardProps> = observer(({ data }) => {
   const {
     cityName,
     countryName,
@@ -39,6 +30,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
     timezone,
   } = data;
 
+  const currentTempType = WeatherStore.getTempTypeByCityName(cityName);
   const handleClose = () => {
     WeatherStore.removeWeatherData(cityName);
   };
@@ -83,7 +75,7 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
       });
     }
   }, [temperature.actual]);
-  console.log(themeColor);
+
   return (
     <Card
       shadow="md"
@@ -119,13 +111,13 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
       </Title>
       <WeatherChart
         forecastList={forecastList}
-        tempType={tempType}
+        tempType={currentTempType}
         color={themeColor.chart}
       />
 
       <Group justify="space-between" align="end">
         <Stack gap={0}>
-          {tempType === "C" ? (
+          {currentTempType === "C" ? (
             <>
               <Group gap={2} align="start">
                 <Text fz="tempValue">
@@ -135,7 +127,9 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
                   fz="tempUnit"
                   flex={1}
                   style={{ cursor: "pointer" }}
-                  onClick={() => setTempType("F")}
+                  onClick={() =>
+                    WeatherStore.updateWeatherDataTempType(cityName, "F")
+                  }
                 >
                   °C |{" "}
                   <Text fz="tempUnit" component="span" c={"dimmed"}>
@@ -160,7 +154,9 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
                   fz="tempUnit"
                   flex={1}
                   style={{ cursor: "pointer" }}
-                  onClick={() => setTempType("C")}
+                  onClick={() =>
+                    WeatherStore.updateWeatherDataTempType(cityName, "C")
+                  }
                 >
                   <Text fz="tempUnit" component="span" c={"dimmed"}>
                     °C{" "}
@@ -201,6 +197,6 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
       </Group>
     </Card>
   );
-};
+});
 
 export default CityCard;

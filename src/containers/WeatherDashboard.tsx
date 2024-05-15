@@ -35,6 +35,8 @@ const WeatherDashboard = observer(() => {
     fetchUserLocationWeather();
   }, [userLocation]);
 
+  console.log(WeatherStore.weatherList);
+
   return (
     <div className="weather-dashboard">
       {/* TODO: make a better way to display error message */}
