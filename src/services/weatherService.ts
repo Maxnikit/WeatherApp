@@ -45,7 +45,6 @@ export const getWeatherByCoordinates = async (
       forecastList: forecast.list,
     };
 
-    console.log(filteredData);
     return filteredData;
   } catch (error) {
     console.error("Error fetching weather data:", error);
@@ -91,7 +90,6 @@ export const getWeatherByCityName = async (
       forecastList: forecast.list,
     };
 
-    console.log(filteredData);
     return filteredData;
   } catch (error) {
     console.error("Error fetching weather data by city name:", error);

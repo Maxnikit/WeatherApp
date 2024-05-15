@@ -39,7 +39,6 @@ class WeatherStore {
   };
 
   updateWeatherDataTempType = (cityName: string, newTempType: "C" | "F") => {
-    console.log(cityName, newTempType);
     const cityWeather = this.weatherList.find(
       (city) => city.cityName === cityName
     );

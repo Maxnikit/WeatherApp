@@ -50,31 +50,29 @@ const CityCard: React.FC<CityCardProps> = observer(({ data }) => {
       clearInterval(interval); // Cleanup interval on component unmount
     };
   }, [timezone]); // Run the effect only when timezone changes
+
   interface ThemeColor {
     bg: string;
     chart: string;
     secondaryValues: string;
   }
 
-  const defaultThemeColor: ThemeColor = {
+  const blueThemeColor: ThemeColor = {
     bg: alpha("var(--mantine-color-blue-5)", 0.1),
     chart: "indigo.7",
     secondaryValues: "blue.4",
   };
 
-  const [themeColor, setThemeColor] =
-    React.useState<ThemeColor>(defaultThemeColor);
+  const orangeThemeColor: ThemeColor = {
+    bg: alpha("var(--mantine-color-orange-5)", 0.1),
+    chart: "orange.7",
+    secondaryValues: "orange.4",
+  };
 
-  React.useEffect(() => {
-    console.log(temperature.actual);
-    if (convertToCelsius(temperature.actual) > 0) {
-      setThemeColor({
-        bg: alpha("var(--mantine-color-orange-5)", 0.1),
-        chart: "orange.7",
-        secondaryValues: "orange.4",
-      });
-    }
-  }, [temperature.actual]);
+  const themeColor: ThemeColor =
+    convertToCelsius(temperature.actual) > 0
+      ? orangeThemeColor
+      : blueThemeColor;
 
   return (
     <Card

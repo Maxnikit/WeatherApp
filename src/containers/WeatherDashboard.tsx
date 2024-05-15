@@ -14,7 +14,6 @@ const WeatherDashboard = observer(() => {
 
   // Fetch user's current location weather on mount
   useEffect(() => {
-    console.warn(userLocation);
     const fetchUserLocationWeather = async () => {
       if (userLocation) {
         try {
@@ -31,8 +30,6 @@ const WeatherDashboard = observer(() => {
 
     fetchUserLocationWeather();
   }, [userLocation, addWeatherData]);
-
-  console.log(WeatherStore.weatherList);
 
   return (
     <div className="weather-dashboard">
