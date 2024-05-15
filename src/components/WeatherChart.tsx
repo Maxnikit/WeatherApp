@@ -58,25 +58,28 @@ function WeatherChart({ forecastList, tempType }: Props) {
   } else if (tempType === "F") {
     yAxis = "temp.fahrenheit";
   }
-  console.log(daysArray[0]);
 
   // TODO Решить, использовать Mantine Charts или Recharts
   const renderCustomLabel = (props: any) => {
-    const { x, y, stroke, value, index, payload } = props;
+    console.log(props);
+    const { x, y, stroke, value, index } = props;
 
     // Check if the current label is for the 'Start' or 'End' data point by index
-    if (index === 0 || index === payload.length - 1) {
-      // This is the first or last label, return null to avoid rendering it
+    // if (index === 0 || index === payload.length - 1) {
+    //   // This is the first or last label, return null to avoid rendering it
+    //   return null;
+    // }
+    if (value === 0) {
       return null;
     }
-
+    console.log(index);
     // Render the label normally for all other data points
     return (
       <text
         x={x}
         y={y}
-        dy={-10}
-        fill={stroke}
+        dy={-7}
+        fill="rgb(134, 142, 150)"
         fontSize={10}
         textAnchor="middle"
       >
@@ -88,7 +91,8 @@ function WeatherChart({ forecastList, tempType }: Props) {
   return (
     // MANTINE
     <AreaChart
-      h={140}
+      my={20}
+      h={120}
       data={[
         { date: "Start", temp: { celsius: 0 } }, // Start point at 0
         ...daysArray,
@@ -104,14 +108,13 @@ function WeatherChart({ forecastList, tempType }: Props) {
       curveType="bump"
       withGradient
       withTooltip={false}
-      strokeWidth={0.5}
+      strokeWidth={0}
       type="stacked"
       gridAxis="none"
       withYAxis={false}
       withDots={false}
-      yAxisProps={{ width: 30 }}
-      // areaProps={{ label: { fontSize: 10, position: "top" } }}
       areaProps={{ label: renderCustomLabel }}
+      // Does not render Start and End placeholders
       xAxisProps={{
         tickFormatter: (date) =>
           date === "Start" || date === "End" ? "" : date,
