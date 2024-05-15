@@ -58,6 +58,32 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
       clearInterval(interval); // Cleanup interval on component unmount
     };
   }, [timezone]); // Run the effect only when timezone changes
+  interface ThemeColor {
+    bg: string;
+    chart: string;
+    secondaryValues: string;
+  }
+
+  const defaultThemeColor: ThemeColor = {
+    bg: alpha("var(--mantine-color-blue-5)", 0.1),
+    chart: "indigo.7",
+    secondaryValues: "blue.4",
+  };
+
+  const [themeColor, setThemeColor] =
+    React.useState<ThemeColor>(defaultThemeColor);
+
+  React.useEffect(() => {
+    console.log(temperature.actual);
+    if (convertToCelsius(temperature.actual) > 0) {
+      setThemeColor({
+        bg: alpha("var(--mantine-color-orange-5)", 0.1),
+        chart: "orange.7",
+        secondaryValues: "orange.4",
+      });
+    }
+  }, [temperature.actual]);
+  console.log(themeColor);
   return (
     <Card
       shadow="md"
@@ -65,12 +91,13 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
       radius="md"
       withBorder
       w={380}
-      bg={alpha("#4578FC", 0.1)}
+      bg={themeColor.bg}
     >
       <CloseButton
         pos="absolute"
         top="0px"
         right="0px"
+        c={"gray.5"}
         size={"sm"}
         variant="transparent"
         onClick={handleClose}
@@ -90,7 +117,11 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
       <Title order={4} fw={300}>
         {formattedDate}
       </Title>
-      <WeatherChart forecastList={forecastList} tempType={tempType} />
+      <WeatherChart
+        forecastList={forecastList}
+        tempType={tempType}
+        color={themeColor.chart}
+      />
 
       <Group justify="space-between" align="end">
         <Stack gap={0}>
@@ -150,19 +181,19 @@ const CityCard: React.FC<CityCardProps> = ({ data }) => {
         <Stack align="end" gap={5}>
           <Text>
             Wind:{" "}
-            <Text component="span" c={"blue"} fw={600}>
+            <Text component="span" c={themeColor.secondaryValues} fw={600}>
               {wind.toFixed(1)} m/s
             </Text>
           </Text>
           <Text>
             Humidity:{" "}
-            <Text component="span" c={"blue"} fw={600}>
+            <Text component="span" c={themeColor.secondaryValues} fw={600}>
               {humidity}%
             </Text>
           </Text>
           <Text>
             Pressure:{" "}
-            <Text component="span" c={"blue"} fw={600}>
+            <Text component="span" c={themeColor.secondaryValues} fw={600}>
               {pressure}Pa
             </Text>
           </Text>

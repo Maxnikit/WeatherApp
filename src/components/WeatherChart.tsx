@@ -6,9 +6,10 @@ type TemperatureUnit = "C" | "F";
 interface Props {
   forecastList: any;
   tempType: TemperatureUnit;
+  color: string;
 }
 
-function WeatherChart({ forecastList, tempType }: Props) {
+function WeatherChart({ forecastList, tempType, color }: Props) {
   // Get the forecast data for each day
   const daysMap = new Map();
 
@@ -96,7 +97,7 @@ function WeatherChart({ forecastList, tempType }: Props) {
       series={[
         {
           name: yAxis,
-          color: "indigo.6",
+          color: color,
         },
       ]}
       curveType="bump"
