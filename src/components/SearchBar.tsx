@@ -1,6 +1,6 @@
 // components/SearchBar.tsx
 import React, { useState } from "react";
-import { Button, Group, Center, Autocomplete, Flex } from "@mantine/core";
+import { Button, Autocomplete, Flex } from "@mantine/core";
 import { getWeatherByCityName } from "../services/weatherService";
 
 import WeatherStore from "../stores/WeatherStore";

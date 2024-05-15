@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import useUserLocation from "../hooks/useUserLocation";
 import CityCard from "../components/CityCard";
@@ -9,9 +9,6 @@ import { Group } from "@mantine/core";
 import Error from "../components/Error";
 
 const WeatherDashboard = observer(() => {
-  const [userCityWeather, setUserCityWeather] = useState<WeatherData | null>(
-    null
-  );
   const { location: userLocation, error: locationError } = useUserLocation();
   const { addWeatherData } = WeatherStore;
 
@@ -33,7 +30,7 @@ const WeatherDashboard = observer(() => {
     };
 
     fetchUserLocationWeather();
-  }, [userLocation]);
+  }, [userLocation, addWeatherData]);
 
   console.log(WeatherStore.weatherList);
 
@@ -45,7 +42,7 @@ const WeatherDashboard = observer(() => {
       )}
       <Error />
       <Group justify="center" w={"100%"} p={10}>
-        {userCityWeather && <CityCard data={userCityWeather} />}
+        {/* {userCityWeather && <CityCard data={userCityWeather} />} */}
 
         {WeatherStore.weatherList.map(
           (weatherData: WeatherData, index: number) => (
