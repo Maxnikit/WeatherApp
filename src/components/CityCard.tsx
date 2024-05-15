@@ -95,7 +95,7 @@ const CityCard: React.FC<CityCardProps> = observer(({ data }) => {
         onClick={handleClose}
       />
 
-      <Group justify="space-between">
+      <Group gap={0}>
         <Title order={4} flex={1} fw={500}>
           {cityName}, {countryName}
         </Title>
