@@ -6,6 +6,7 @@ import { getWeatherByCoordinates } from "../services/weatherService";
 import { WeatherData } from "../types/weather.types";
 import WeatherStore from "../stores/WeatherStore";
 import { Group } from "@mantine/core";
+import Error from "../components/Error";
 
 const WeatherDashboard = observer(() => {
   const [userCityWeather, setUserCityWeather] = useState<WeatherData | null>(
@@ -40,6 +41,7 @@ const WeatherDashboard = observer(() => {
       {locationError && (
         <p>WORK IN PROGRESS. Error getting location: {locationError}</p>
       )}
+      <Error />
       <Group justify="center" w={"100%"} p={10}>
         {userCityWeather && <CityCard data={userCityWeather} />}
 

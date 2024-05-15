@@ -25,6 +25,7 @@ const useUserLocation = () => {
     };
 
     const error = (err: GeolocationPositionError) => {
+      console.log(err);
       setError(err.message);
     };
 

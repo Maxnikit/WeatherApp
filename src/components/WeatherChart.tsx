@@ -1,6 +1,16 @@
 import { AreaChart } from "@mantine/charts";
 
 import { convertToCelsius, convertToFahrenheit } from "../utilities/utilities";
+import {
+  Area,
+  // AreaChart,
+  CartesianGrid,
+  LabelList,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 type TemperatureUnit = "C" | "F";
 interface Props {
@@ -48,11 +58,42 @@ function WeatherChart({ forecastList, tempType }: Props) {
   } else if (tempType === "F") {
     yAxis = "temp.fahrenheit";
   }
+  console.log(daysArray[0]);
+
+  // TODO Решить, использовать Mantine Charts или Recharts
+  const renderCustomLabel = (props: any) => {
+    const { x, y, stroke, value, index, payload } = props;
+
+    // Check if the current label is for the 'Start' or 'End' data point by index
+    if (index === 0 || index === payload.length - 1) {
+      // This is the first or last label, return null to avoid rendering it
+      return null;
+    }
+
+    // Render the label normally for all other data points
+    return (
+      <text
+        x={x}
+        y={y}
+        dy={-10}
+        fill={stroke}
+        fontSize={10}
+        textAnchor="middle"
+      >
+        {value}
+      </text>
+    );
+  };
 
   return (
+    // MANTINE
     <AreaChart
       h={140}
-      data={daysArray}
+      data={[
+        { date: "Start", temp: { celsius: 0 } }, // Start point at 0
+        ...daysArray,
+        { date: "End", temp: { celsius: 0 } }, // End point at 0
+      ]}
       dataKey="date"
       series={[
         {
@@ -60,16 +101,50 @@ function WeatherChart({ forecastList, tempType }: Props) {
           color: "indigo.6",
         },
       ]}
-      curveType="natural"
+      curveType="bump"
       withGradient
       withTooltip={false}
       strokeWidth={0.5}
       type="stacked"
       gridAxis="none"
-      //   withYAxis={false}
+      withYAxis={false}
       withDots={false}
       yAxisProps={{ width: 30 }}
+      // areaProps={{ label: { fontSize: 10, position: "top" } }}
+      areaProps={{ label: renderCustomLabel }}
+      xAxisProps={{
+        tickFormatter: (date) =>
+          date === "Start" || date === "End" ? "" : date,
+      }}
     />
+
+    // RECHARTS
+    // <ResponsiveContainer width="100%" height={140}>
+    //   <AreaChart
+    //     data={daysArray}
+    //     margin={{ top: 20, right: 20, bottom: 0, left: 20 }}
+    //   >
+    //     <defs>
+    //       <linearGradient id="colorTemperature" x1="0" y1="0" x2="0" y2="1">
+    //         <stop offset="5%" stopColor="#4C51BF" stopOpacity={0.8} />
+    //         <stop offset="95%" stopColor="#4C51BF" stopOpacity={0} />
+    //       </linearGradient>
+    //     </defs>
+    //     <XAxis dataKey="date" />
+    //     <Area
+    //       type="bump"
+    //       dataKey="temp.celsius"
+    //       stroke="#4C51BF"
+    //       strokeWidth={0.5}
+    //       fillOpacity={1}
+    //       fill="url(#colorTemperature)"
+    //       stackId="1"
+    //       label
+    //     >
+    //       <LabelList dataKey="temp.celsius" position="top" />
+    //     </Area>
+    //   </AreaChart>
+    // </ResponsiveContainer>
   );
 }
 export default WeatherChart;
