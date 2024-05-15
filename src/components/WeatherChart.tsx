@@ -17,6 +17,7 @@ interface Props {
   forecastList: any;
   tempType: TemperatureUnit;
 }
+
 function WeatherChart({ forecastList, tempType }: Props) {
   // Get the forecast data for each day
   const daysMap = new Map();
@@ -62,24 +63,22 @@ function WeatherChart({ forecastList, tempType }: Props) {
   // TODO Решить, использовать Mantine Charts или Recharts
   const renderCustomLabel = (props: any) => {
     console.log(props);
-    const { x, y, stroke, value, index } = props;
+    const { x, y, value } = props;
 
-    // Check if the current label is for the 'Start' or 'End' data point by index
-    // if (index === 0 || index === payload.length - 1) {
-    //   // This is the first or last label, return null to avoid rendering it
-    //   return null;
-    // }
+    // TODO find a way to only remove 0 from start and end of chart
     if (value === 0) {
       return null;
     }
-    console.log(index);
-    // Render the label normally for all other data points
+
+    // Equal to gray.5 from Mantine Colors
+    const labelColor = "rgb(173, 181, 189)";
+
     return (
       <text
         x={x}
         y={y}
         dy={-7}
-        fill="rgb(134, 142, 150)"
+        fill={labelColor}
         fontSize={10}
         textAnchor="middle"
       >
@@ -110,6 +109,7 @@ function WeatherChart({ forecastList, tempType }: Props) {
       withTooltip={false}
       strokeWidth={0}
       type="stacked"
+      textColor="gray.5"
       gridAxis="none"
       withYAxis={false}
       withDots={false}
