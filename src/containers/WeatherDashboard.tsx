@@ -73,7 +73,6 @@ const WeatherDashboard = observer(() => {
       clearInterval(interval); // Clear interval on unmount
     };
   }, []);
-  console.log(userLocation);
 
   return (
     <>
