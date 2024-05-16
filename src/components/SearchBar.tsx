@@ -1,24 +1,34 @@
 // components/SearchBar.tsx
 import React, { useState } from "react";
 import { Button, Autocomplete, Flex } from "@mantine/core";
+import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
 import { getWeatherByCityName } from "../services/weatherService";
 
 import WeatherStore from "../stores/WeatherStore";
+import usePlaces from "../hooks/usePlaces";
 
 const SearchBar = () => {
   const { addWeatherData } = WeatherStore;
-  const [cityName, setCityName] = useState("");
+  const [searchTerm, setCityName] = useState("Sevastopol");
+  const [loading, handlers] = useDisclosure();
+  const [debounced] = useDebouncedValue(searchTerm, 400);
   // const { locations } = usePlaces(debounced);
 
   const handleSearch = async (event: any) => {
+    console.log(loading);
     event.preventDefault();
+    console.log(loading);
+    handlers.open();
+    console.log(loading);
     try {
-      const weather = await getWeatherByCityName(cityName);
+      const weather = await getWeatherByCityName(searchTerm);
       addWeatherData(weather);
       setCityName("");
     } catch (error) {
       console.log(error);
     }
+    handlers.close();
+    console.log(loading);
   };
 
   // const places =
@@ -48,15 +58,21 @@ const SearchBar = () => {
         mt={50}
       >
         <Autocomplete
-          aria-label="Enter the name of your location"
+          aria-label="Enter city name"
           placeholder="Enter city name"
-          value={cityName}
+          value={searchTerm}
           onChange={setCityName}
           limit={5}
-
-          // w={{ base: 300, sm: 400 }}
+          data={["Sevastopol", "New York, NY", "Los Angeles, CA", "Moscow"]}
+          // data={places}
         />
-        <Button type="submit">Get weather</Button>
+        <Button type="submit" loading={loading}>
+          Add
+        </Button>
+        <Button onClick={WeatherStore.consoleLogWeatherList}>
+          Console log
+        </Button>
+        <Button onClick={WeatherStore.clearWeatherList}>Clear list</Button>
       </Flex>
       {/* </Center> */}
     </form>

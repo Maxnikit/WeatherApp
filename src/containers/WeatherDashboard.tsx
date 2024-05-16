@@ -6,48 +6,93 @@ import { getWeatherByCoordinates } from "../services/weatherService";
 import { WeatherData } from "../types/weather.types";
 import WeatherStore from "../stores/WeatherStore";
 import { Group } from "@mantine/core";
-import Error from "../components/Error";
+
+import weatherStore from "../stores/WeatherStore";
+import { useQuery } from "@tanstack/react-query";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
 
 const WeatherDashboard = observer(() => {
-  const { location: userLocation, error: locationError } = useUserLocation();
-  const { addWeatherData } = WeatherStore;
+  const { location: userLocation } = useUserLocation();
 
-  // Fetch user's current location weather on mount
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["userLocation"],
+    queryFn: userLocation
+      ? () => getWeatherByCoordinates(userLocation.lat, userLocation.lon)
+      : undefined,
+    // enabled: !!userLocation,
+    // staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
   useEffect(() => {
-    const fetchUserLocationWeather = async () => {
-      if (userLocation) {
-        try {
-          const weather = await getWeatherByCoordinates(
-            userLocation.lat,
-            userLocation.lon
-          );
-          addWeatherData(weather);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
+    if (isLoading) {
+      notifications.show({
+        title: "Loading...",
+        message: "Trying to get weather data for your location",
+        id: "loading",
+        autoClose: false,
+        loading: true,
+      });
+    }
 
-    fetchUserLocationWeather();
-  }, [userLocation, addWeatherData]);
+    if (error) {
+      notifications.hide("loading");
+      notifications.show({
+        title: "Could not get your location",
+        message: "You can try using VPN",
+        id: "error",
+        color: "red",
+        icon: <IconX />,
+      });
+    }
+
+    if (data) {
+      notifications.hide("loading");
+      notifications.show({
+        title: "Success",
+        message: "Weather data retrieved successfully",
+        id: "success",
+        color: "green",
+        icon: <IconCheck />,
+      });
+    }
+  }, [data, error, isLoading]);
+
+  React.useEffect(() => {
+    if (data) {
+      WeatherStore.addWeatherData(data);
+    }
+  }, [data]);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      weatherStore.updateTimeGlobally();
+    }, 1000); // Update every minute
+
+    return () => {
+      clearInterval(interval); // Clear interval on unmount
+    };
+  }, []);
+  console.log(userLocation);
 
   return (
-    <div className="weather-dashboard">
-      {/* TODO: make a better way to display error message */}
-      {locationError && (
-        <p>WORK IN PROGRESS. Error getting location: {locationError}</p>
-      )}
-      <Error />
-      <Group justify="center" w={"100%"} p={10}>
-        {/* {userCityWeather && <CityCard data={userCityWeather} />} */}
-
-        {WeatherStore.weatherList.map(
-          (weatherData: WeatherData, index: number) => (
-            <CityCard key={index} data={weatherData} />
-          )
-        )}
-      </Group>
-    </div>
+    <>
+      {/* {error && (
+        <Error
+          title="Could not get your location"
+          message="You can try using VPN"
+        />
+      )} */}
+      <div className="weather-dashboard">
+        <Group justify="center" w={"100%"} p={10}>
+          {WeatherStore.weatherList.map(
+            (weatherData: WeatherData, index: number) => (
+              <CityCard key={index} data={weatherData} />
+            )
+          )}
+        </Group>
+      </div>
+    </>
   );
 });
 

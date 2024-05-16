@@ -6,7 +6,9 @@ import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@mantine/core/styles.css";
 import "@mantine/charts/styles.css";
+import "@mantine/notifications/styles.css";
 import { createTheme, MantineProvider, rem } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { RootStoreContext } from "./root-store-context";
 import RootStore from "./stores/RootStore";
 
@@ -29,15 +31,16 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <RootStoreContext.Provider value={new RootStore()}>
-      <MantineProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-      </MantineProvider>
-    </RootStoreContext.Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <RootStoreContext.Provider value={new RootStore()}>
+    <MantineProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <Notifications />
+        <App />
+      </QueryClientProvider>
+    </MantineProvider>
+  </RootStoreContext.Provider>
+  //  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

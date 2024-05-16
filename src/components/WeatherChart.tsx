@@ -1,6 +1,15 @@
 import { AreaChart } from "@mantine/charts";
 
 import { convertToCelsius, convertToFahrenheit } from "../utilities/utilities";
+// Its used to supress unneeded errors that are not really errors
+const error = console.error;
+console.error = (...args: any) => {
+  if (/textColor/.test(args[1])) {
+    return;
+  }
+  if (/defaultProps/.test(args[0])) return;
+  error(...args);
+};
 
 type TemperatureUnit = "C" | "F";
 interface Props {
@@ -53,7 +62,6 @@ function WeatherChart({ forecastList, tempType, color }: Props) {
     zeroTemp = 32;
   }
 
-  // TODO Решить, использовать Mantine Charts или Recharts
   const renderCustomLabel = (props: any) => {
     const { x, y, value } = props;
 

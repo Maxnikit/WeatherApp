@@ -23,4 +23,6 @@ export interface WeatherData {
   countryName: string;
   forecastList: any;
   timezone: number;
+  formattedDate: string;
+  id: number;
 }

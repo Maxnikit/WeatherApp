@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 interface UserLocation {
   lat: number;
   lon: number;
-  id: number;
 }
 
 const useUserLocation = () => {
@@ -20,7 +19,6 @@ const useUserLocation = () => {
       setLocation({
         lat: position.coords.latitude,
         lon: position.coords.longitude,
-        id: 1,
       });
     };
 

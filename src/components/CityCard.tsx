@@ -6,7 +6,6 @@ import WeatherChart from "./WeatherChart";
 import {
   convertToCelsius,
   convertToFahrenheit,
-  formatDateTime,
   formatTemp,
 } from "../utilities/utilities";
 import { alpha } from "@mantine/core";
@@ -27,29 +26,16 @@ const CityCard: React.FC<CityCardProps> = observer(({ data }) => {
     wind,
     weather,
     forecastList,
-    timezone,
+
+    id,
   } = data;
 
-  const currentTempType = WeatherStore.getTempTypeByCityName(cityName);
+  const currentTempType = WeatherStore.getTempType(id);
   const handleClose = () => {
-    WeatherStore.removeWeatherData(cityName);
+    WeatherStore.removeWeatherData(id);
   };
 
   const iconURL = "http://openweathermap.org/img/w/" + weather.icon + ".png";
-
-  const [formattedDate, setFormattedDate] = React.useState<string | null>(null);
-
-  // TODO sync refresh for every cards at once
-  React.useEffect(() => {
-    setFormattedDate(formatDateTime(timezone));
-    const interval = setInterval(() => {
-      setFormattedDate(formatDateTime(timezone));
-    }, 60000); // Run every minute (60000 milliseconds)
-
-    return () => {
-      clearInterval(interval); // Cleanup interval on component unmount
-    };
-  }, [timezone]); // Run the effect only when timezone changes
 
   interface ThemeColor {
     bg: string;
@@ -84,6 +70,7 @@ const CityCard: React.FC<CityCardProps> = observer(({ data }) => {
       bg={themeColor.bg}
     >
       <CloseButton
+        aria-label="Delete card"
         pos="absolute"
         top="0px"
         right="0px"
@@ -105,7 +92,7 @@ const CityCard: React.FC<CityCardProps> = observer(({ data }) => {
         </Group>
       </Group>
       <Title order={4} fw={300}>
-        {formattedDate}
+        {WeatherStore.getFormattedDate(id)}
       </Title>
       <WeatherChart
         forecastList={forecastList}
@@ -126,7 +113,7 @@ const CityCard: React.FC<CityCardProps> = observer(({ data }) => {
                   flex={1}
                   style={{ cursor: "pointer" }}
                   onClick={() =>
-                    WeatherStore.updateWeatherDataTempType(cityName, "F")
+                    WeatherStore.updateWeatherDataTempType(id, "F")
                   }
                 >
                   °C |{" "}
@@ -153,7 +140,7 @@ const CityCard: React.FC<CityCardProps> = observer(({ data }) => {
                   flex={1}
                   style={{ cursor: "pointer" }}
                   onClick={() =>
-                    WeatherStore.updateWeatherDataTempType(cityName, "C")
+                    WeatherStore.updateWeatherDataTempType(id, "C")
                   }
                 >
                   <Text fz="tempUnit" component="span" c={"dimmed"}>
